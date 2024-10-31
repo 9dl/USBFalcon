@@ -9,6 +9,14 @@
 - **Automatic File Copying**: Detects and copies files as soon as a USB drive is plugged in.
 - **User-Friendly**: Simple setup and operation.
 - **Error Handling**: Provides clear error messages for troubleshooting.
+  You can create a simple table section to show the platforms where your projects are developed and tested, using arrow emojis to indicate the status. Here’s an example layout:
+
+## Platforms
+| Platform       | Developed | Tested |     Version     |
+|----------------|:---------:|:------:|:---------------:|
+| Windows        |     ✅     |   ✅    | Windows 11 24H2 |
+| Linux          |     ❌     |   ❌    |        ❌        |
+| macOS          |     ❌     |   ❌    |        ❌        |
 
 ## Installation
 
