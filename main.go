@@ -22,9 +22,9 @@ type Volume struct {
 }
 
 const (
-	CheckInterval      = 500 * time.Millisecond
-	MaxUSBSize         = 128 * 1024 * 1024 * 1024 // 128 GB
-	disableVolumeCheck = false
+	CheckInterval   = 500 * time.Millisecond
+	MaxUSBSize      = 128 * 1024 * 1024 * 1024 // 128 GB
+	VolumeDupeCheck = true
 )
 
 var DestinationDir = "C:\\usb_data"
@@ -39,7 +39,7 @@ func main() {
 			errorCheck(err)
 		}
 
-		if !disableVolumeCheck {
+		if VolumeDupeCheck {
 			for i := 0; i < len(volumes); i++ {
 				if _, ok := DumpedUSBs[volumes[i].DeviceID]; ok {
 					volumes = append(volumes[:i], volumes[i+1:]...)
@@ -85,11 +85,11 @@ func main() {
 func clearConsole() {
 	cmd := exec.Command("cmd", "/c", "title USBFalcon - github.com/9dl/USBFalcon")
 	cmd.Stdout = os.Stdout
-	cmd.Run()
+	_ = cmd.Run()
 
 	cmd = exec.Command("cmd", "/c", "cls")
 	cmd.Stdout = os.Stdout
-	cmd.Run()
+	_ = cmd.Run()
 }
 
 func formatBytes(bytes int64) string {
@@ -168,13 +168,19 @@ func copyFile(src, dst string) error {
 	if err != nil {
 		return err
 	}
-	defer in.Close()
+	defer func(in *os.File) {
+		err := in.Close()
+		errorCheck(err)
+	}(in)
 
 	out, err := os.Create(dst)
 	if err != nil {
 		return err
 	}
-	defer out.Close()
+	defer func(out *os.File) {
+		err := out.Close()
+		errorCheck(err)
+	}(out)
 
 	if _, err := io.Copy(out, in); err != nil {
 		return err

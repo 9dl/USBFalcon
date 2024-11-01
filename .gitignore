@@ -20,4 +20,9 @@
 # Go workspace file
 go.work
 
-.idea\*
+# JetBrains IDEs
+.idea/
+
+# Qodana
+qodana.yaml
+qodana.sarif.json
